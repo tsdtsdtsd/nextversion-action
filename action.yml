@@ -1,0 +1,79 @@
+name: "nextversion-action"
+description: "Automatic semantic versioning action"
+author: "Orkan Alat"
+inputs:
+  tool-version:
+    description: "Version of the nextversion tool to use"
+    default: "latest"
+  repo:
+    description: "Path to git repository (default: '.')"
+    default: "."
+  default-current:
+    description: "Default current version if none could be detected from tags (default: 'v0.0.0')"
+    default: "v0.0.0"
+  prestable-mode:
+    description: "Disable major increments for versions prior to 1.0.0 (in-development phase) (default: 'false')"
+    default: "false"
+  
+outputs:
+  currentVersion:
+    description: "Current version based on tags"
+    value: "${{ steps.version.outputs.CURRENT }}"
+  currentVersionStrict:
+    description: "Current version based on tags, always without a prefix"
+    value: "${{ steps.version.outputs.CURRENT_STRICT }}"
+  hasCurrentVersion:
+    description: "False if repo has no (usable) tags"
+    value: "${{ steps.version.outputs.HAS_CURRENT }}"
+  nextVersion:
+    description: "Bumped next version"
+    value: "${{ steps.version.outputs.NEXT }}"
+  nextVersionStrict:
+    description: "Bumped next version, always without a prefix"
+    value: "${{ steps.version.outputs.NEXT_STRICT }}"
+  hasNextVersion:
+    description: "False if there were no applicable commit messages"
+    value: "${{ steps.version.outputs.HAS_NEXT }}"
+  prereleaseVersion:
+    description: "Bumped prerelease version based on tags"
+    value: "${{ steps.version.outputs.PRERELEASE }}"
+  prereleaseVersionStrict:
+    description: "Bumped prerelease version based on tags, always without a prefix"
+    value: "${{ steps.version.outputs.PRERELEASE_STRICT }}"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup binary
+      shell: bash
+      run: |
+        set -eo pipefail
+
+        if [ "${{ inputs.tool-version }}" = "latest" ]; then
+          download_url="$(curl -Ls https://api.github.com/repos/tsdtsdtsd/nextversion/releases/latest | jq -r .assets[0].browser_download_url)"
+        else
+          download_url="https://github.com/tsdtsdtsd/nextversion/releases/download/${{ inputs.tool-version }}/nextversion"
+        fi
+
+        curl -L "$download_url" > /usr/local/bin/nextversion
+        chmod +x /usr/local/bin/nextversion
+
+    - name: Call nextversion
+      id: version
+      shell: bash
+      run: |
+        set -eo pipefail
+
+        NEXTVERSION_ARGS="-f 'shell' -d '${{ inputs.default-current }}'"
+        if [ "${{ inputs.prestable-mode }}" = "true" ]; then
+          NEXTVERSION_ARGS="${NEXTVERSION_ARGS} -p"
+        fi
+
+        # export versionJSON=$(nextversion $NEXTVERSION_ARGS)
+        # echo "currentVersion=$(echo $versionJSON | jq -r .current)" >> $GITHUB_OUTPUT
+        
+        NEXTVERSION_RESULT=$(nextversion $NEXTVERSION_ARGS)
+        echo "$NEXTVERSION_RESULT" >> $GITHUB_OUTPUT
+
+        echo "Output from CLI:"
+        echo "$(echo $NEXTVERSION_RESULT)"
