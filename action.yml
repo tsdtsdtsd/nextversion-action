@@ -2,9 +2,9 @@ name: "nextversion-action"
 description: "Automatic semantic versioning action"
 author: "Orkan Alat"
 inputs:
-  tool-version:
-    description: "Version of the nextversion tool to use"
-    default: "latest"
+  # tool-version:
+  #   description: "Version of the nextversion tool to use"
+  #   default: "latest"
   repo:
     description: "Path to git repository (default: '.')"
     default: "."
@@ -49,13 +49,18 @@ runs:
       run: |
         set -eo pipefail
 
-        if [ "${{ inputs.tool-version }}" = "latest" ]; then
-          download_url="$(curl -Ls https://api.github.com/repos/tsdtsdtsd/nextversion/releases/latest | jq -r .assets[0].browser_download_url)"
-        else
-          download_url="https://github.com/tsdtsdtsd/nextversion/releases/download/${{ inputs.tool-version }}/nextversion"
-        fi
+        # if [ "${{ inputs.tool-version }}" = "latest" ]; then
+        #   download_url="$(curl -Ls https://api.github.com/repos/tsdtsdtsd/nextversion/releases/latest | jq -r .assets[0].browser_download_url)"
+        # else
+        #   download_url="https://github.com/tsdtsdtsd/nextversion/releases/download/${{ inputs.tool-version }}/nextversion_Linux_x86_64.tar.gz"
+        # fi
 
-        curl -L "$download_url" > /usr/local/bin/nextversion
+        download_url="https://github.com/tsdtsdtsd/nextversion/releases/download/v0.1.2/nextversion_Linux_x86_64.tar.gz"
+        echo $download_url
+
+        curl -L "$download_url" > /tmp/nextversion.tar.gz
+        tar -xzvf /tmp/nextversion.tar.gz -C /tmp
+        mv /tmp/nextversion /usr/local/bin/nextversion
         chmod +x /usr/local/bin/nextversion
 
     - name: Call nextversion
