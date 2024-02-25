@@ -18,28 +18,28 @@ inputs:
 outputs:
   currentVersion:
     description: "Current version based on tags"
-    value: "${{ steps.version.outputs.CURRENT }}"
+    value: "${{ steps.version.outputs.currentVersion }}"
   currentVersionStrict:
     description: "Current version based on tags, always without a prefix"
-    value: "${{ steps.version.outputs.CURRENT_STRICT }}"
+    value: "${{ steps.version.outputs.currentVersionStrict }}"
   hasCurrentVersion:
     description: "False if repo has no (usable) tags"
-    value: "${{ steps.version.outputs.HAS_CURRENT }}"
+    value: "${{ steps.version.outputs.hasCurrentVersion }}"
   nextVersion:
     description: "Bumped next version"
-    value: "${{ steps.version.outputs.NEXT }}"
+    value: "${{ steps.version.outputs.nextVersion }}"
   nextVersionStrict:
     description: "Bumped next version, always without a prefix"
-    value: "${{ steps.version.outputs.NEXT_STRICT }}"
+    value: "${{ steps.version.outputs.nextVersionStrict }}"
   hasNextVersion:
     description: "False if there were no applicable commit messages"
-    value: "${{ steps.version.outputs.HAS_NEXT }}"
+    value: "${{ steps.version.outputs.hasNextVersion }}"
   prereleaseVersion:
     description: "Bumped prerelease version based on tags"
-    value: "${{ steps.version.outputs.PRERELEASE }}"
+    value: "${{ steps.version.outputs.prereleaseVersion }}"
   prereleaseVersionStrict:
     description: "Bumped prerelease version based on tags, always without a prefix"
-    value: "${{ steps.version.outputs.PRERELEASE_STRICT }}"
+    value: "${{ steps.version.outputs.prereleaseVersionStrict }}"
 
 runs:
   using: "composite"
