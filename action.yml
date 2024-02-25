@@ -69,16 +69,20 @@ runs:
       run: |
         set -eo pipefail
 
-        NEXTVERSION_ARGS="-f 'shell' -d '${{ inputs.default-current }}'"
+        NEXTVERSION_ARGS="-f json -d ${{ inputs.default-current }}"
         if [ "${{ inputs.prestable-mode }}" = "true" ]; then
           NEXTVERSION_ARGS="${NEXTVERSION_ARGS} -p"
         fi
 
-        # export versionJSON=$(nextversion $NEXTVERSION_ARGS)
-        # echo "currentVersion=$(echo $versionJSON | jq -r .current)" >> $GITHUB_OUTPUT
+        export versionJSON=$(nextversion $NEXTVERSION_ARGS)
+        echo "currentVersion=$(echo $versionJSON | jq -r '."current"')" >> $GITHUB_OUTPUT
+        echo "currentVersionStrict=$(echo $versionJSON | jq -r '."current-strict"')" >> $GITHUB_OUTPUT
+        echo "hasCurrentVersion=$(echo $versionJSON | jq -r '."has-current"')" >> $GITHUB_OUTPUT
+        echo "nextVersion=$(echo $versionJSON | jq -r '."next"')" >> $GITHUB_OUTPUT
+        echo "nextVersionStrict=$(echo $versionJSON | jq -r '."next-strict"')" >> $GITHUB_OUTPUT
+        echo "hasNextVersion=$(echo $versionJSON | jq -r '."has-next"')" >> $GITHUB_OUTPUT
+        echo "prereleaseVersion=$(echo $versionJSON | jq -r '."prerelease"')" >> $GITHUB_OUTPUT
+        echo "prereleaseVersionStrict=$(echo $versionJSON | jq -r '."prerelease-strict"')" >> $GITHUB_OUTPUT
         
-        NEXTVERSION_RESULT=$(nextversion $NEXTVERSION_ARGS)
-        echo "$NEXTVERSION_RESULT" >> $GITHUB_OUTPUT
-
         echo "Output from CLI:"
-        echo "$(echo $NEXTVERSION_RESULT)"
+        echo "$(echo $versionJSON)"
