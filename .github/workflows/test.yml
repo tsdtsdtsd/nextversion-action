@@ -1,0 +1,21 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:  
+      - uses: actions/checkout@v4
+      - id: version
+        uses: ./
+      - run: |
+          echo "Current: ${{ steps.version.outputs.currentVersion }}"
+          echo "CurrentStrict: ${{ steps.version.outputs.currentVersionStrict }}"
+          echo "HasCurrent: ${{ steps.version.outputs.hasCurrentVersion }}"
+          echo "Next: ${{ steps.version.outputs.nextVersion }}"
+          echo "NextStrict: ${{ steps.version.outputs.nextVersionStrict }}"
+          echo "HasNext: ${{ steps.version.outputs.hasNextVersion }}"
+          echo "Prerelease: ${{ steps.version.outputs.prereleaseVersion }}"
+          echo "PrereleaseStrict: ${{ steps.version.outputs.prereleaseVersionStrict }}"
