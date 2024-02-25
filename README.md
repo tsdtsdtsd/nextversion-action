@@ -59,7 +59,7 @@ jobs:
       uses: tsdtsdtsd/nextversion-action@main 
       id: nextversion
       with:
-        prestable: true
+        prestable-mode: true
 
     # Let's see what nextversion has to say
 
