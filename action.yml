@@ -14,6 +14,9 @@ inputs:
   prestable-mode:
     description: "Disable major increments for versions prior to 1.0.0 (in-development phase) (default: 'false')"
     default: "false"
+  force-stable:
+    description: "Force updating to at least v1.0.0 (this has precedence over prestable-mode) (default: 'false')"
+    default: "false"
   
 outputs:
   currentVersion:
@@ -55,8 +58,7 @@ runs:
         #   download_url="https://github.com/tsdtsdtsd/nextversion/releases/download/${{ inputs.tool-version }}/nextversion_Linux_x86_64.tar.gz"
         # fi
 
-        download_url="https://github.com/tsdtsdtsd/nextversion/releases/download/v0.3.0/nextversion_Linux_x86_64.tar.gz"
-        # echo $download_url
+        download_url="https://github.com/tsdtsdtsd/nextversion/releases/download/v0.4.1/nextversion_Linux_x86_64.tar.gz"
 
         curl -L "$download_url" > /tmp/nextversion.tar.gz
         tar -xzvf /tmp/nextversion.tar.gz -C /tmp
@@ -70,8 +72,13 @@ runs:
         set -eo pipefail
 
         NEXTVERSION_ARGS="-f json -d ${{ inputs.default-current }}"
+        
         if [ "${{ inputs.prestable-mode }}" = "true" ]; then
           NEXTVERSION_ARGS="${NEXTVERSION_ARGS} -p"
+        fi
+        
+        if [ "${{ inputs.force-stable }}" = "true" ]; then
+          NEXTVERSION_ARGS="${NEXTVERSION_ARGS} -s"
         fi
 
         export versionJSON=$(nextversion $NEXTVERSION_ARGS)

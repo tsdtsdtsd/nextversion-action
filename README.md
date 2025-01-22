@@ -14,6 +14,7 @@ nextversion-action uses [nextversion](https://github.com/tsdtsdtsd/nextversion) 
 | `repo` | Path to git repository | `.` |
 | `default-current` | Default current version if none could be detected from tags | `v0.0.0` |
 | `prestable-mode` | Disable major increments for versions prior to 1.0.0 (in-development/prestable phase; see [Prestable](#prestable) | `false` |
+| `force-stable` | Force updating to at least v1.0.0 (this has precedence over prestable-mode) | `false` |
 
 ## Action Outputs
 
