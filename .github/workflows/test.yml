@@ -19,3 +19,4 @@ jobs:
           echo "HasNext: ${{ steps.version.outputs.hasNextVersion }}"
           echo "Prerelease: ${{ steps.version.outputs.prereleaseVersion }}"
           echo "PrereleaseStrict: ${{ steps.version.outputs.prereleaseVersionStrict }}"
+          echo "PrereleaseDockerTag: ${{ steps.version.outputs.prereleaseDockerTag }}"
