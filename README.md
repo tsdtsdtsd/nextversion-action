@@ -28,6 +28,7 @@ nextversion-action uses [nextversion](https://github.com/tsdtsdtsd/nextversion) 
 | `nextVersionStrict` | same as `nextVersion`, but without the `v` prefix | `1.3.0` |
 | `prereleaseVersion` | calculated prerelease version | `v1.3.0-rc+dev.4fa53ce` |
 | `prereleaseVersionStrict` | same as `prereleaseVersion`, but without the `v` prefix | `1.3.0-rc+dev.4fa53ce` |
+| `prereleaseDockerTag` | same as `prereleaseVersionStrict`, but sanitized for use as a docker tag | `1.3.0-rc-dev.4fa53ce` |
 
 ## Usage Example
 
@@ -66,14 +67,15 @@ jobs:
 
     - name: Debug nextversion output
       run: |
-        echo 'hasCurrentVersion: ${{ steps.nextversion.outputs.hasCurrentVersion }}'
-        echo 'hasNextVersion:    ${{ steps.nextversion.outputs.hasNextVersion }}'
-        echo 'current:           ${{ steps.nextversion.outputs.currentVersion }}'
-        echo 'current strict:    ${{ steps.nextversion.outputs.currentVersionStrict }}'
-        echo 'next:              ${{ steps.nextversion.outputs.nextVersion }}'
-        echo 'next strict:       ${{ steps.nextversion.outputs.nextVersionStrict }}'
-        echo 'prestable:         ${{ steps.nextversion.outputs.prestableVersion }}'
-        echo 'prestable strict:  ${{ steps.nextversion.outputs.prestableVersionStrict }}'
+        echo 'hasCurrentVersion:      ${{ steps.nextversion.outputs.hasCurrentVersion }}'
+        echo 'hasNextVersion:         ${{ steps.nextversion.outputs.hasNextVersion }}'
+        echo 'current:                ${{ steps.nextversion.outputs.currentVersion }}'
+        echo 'current strict:         ${{ steps.nextversion.outputs.currentVersionStrict }}'
+        echo 'next:                   ${{ steps.nextversion.outputs.nextVersion }}'
+        echo 'next strict:            ${{ steps.nextversion.outputs.nextVersionStrict }}'
+        echo 'prerelease:             ${{ steps.nextversion.outputs.prereleaseVersion }}'
+        echo 'prerelease strict:      ${{ steps.nextversion.outputs.prereleaseVersionStrict }}'
+        echo 'prerelease docker tag:  ${{ steps.nextversion.outputs.prereleaseDockerTag }}'
 ```
 
 ### Prestable Mode

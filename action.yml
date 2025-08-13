@@ -43,6 +43,9 @@ outputs:
   prereleaseVersionStrict:
     description: "Bumped prerelease version based on tags, always without a prefix"
     value: "${{ steps.version.outputs.prereleaseVersionStrict }}"
+  prereleaseDockerTag:
+    description: "Bumped prerelease version based on tags, always without a prefix"
+    value: "${{ steps.version.outputs.prereleaseDockerTag }}"
 
 runs:
   using: "composite"
@@ -58,7 +61,7 @@ runs:
         #   download_url="https://github.com/tsdtsdtsd/nextversion/releases/download/${{ inputs.tool-version }}/nextversion_Linux_x86_64.tar.gz"
         # fi
 
-        download_url="https://github.com/tsdtsdtsd/nextversion/releases/download/v0.4.1/nextversion_Linux_x86_64.tar.gz"
+        download_url="https://github.com/tsdtsdtsd/nextversion/releases/download/v0.5.1/nextversion_Linux_x86_64.tar.gz"
 
         curl -L "$download_url" > /tmp/nextversion.tar.gz
         tar -xzvf /tmp/nextversion.tar.gz -C /tmp
@@ -90,4 +93,4 @@ runs:
         echo "hasNextVersion=$(echo $versionJSON | jq -r '."has-next"')" >> $GITHUB_OUTPUT
         echo "prereleaseVersion=$(echo $versionJSON | jq -r '."prerelease"')" >> $GITHUB_OUTPUT
         echo "prereleaseVersionStrict=$(echo $versionJSON | jq -r '."prerelease-strict"')" >> $GITHUB_OUTPUT
-        
+        echo "prereleaseDockerTag=$(echo $versionJSON | jq -r '."prerelease-docker-tag"')" >> $GITHUB_OUTPUT
